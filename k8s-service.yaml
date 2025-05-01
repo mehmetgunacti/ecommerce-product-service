@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-products-service
+spec:
+  type: NodePort    # Expose the service via a port
+  selector:
+    app: ecommerce-products
+  ports:
+    - protocol: TCP
+      port: 9090         # The service port accessible outside Kubernetes
+      targetPort: 9090   # The container port the service maps to
+      nodePort: 30090    # The external port exposed by the node

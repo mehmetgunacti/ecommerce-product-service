@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-products
+  namespace: ecommerce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-products
+  template:
+    metadata:
+      labels:
+        app: ecommerce-products
+    spec:
+      containers:
+        - name: ecommerce-products
+          image: registry.ecommerce.local:5000/ecommerce-products:latest
+          ports:
+            - containerPort: 9090
