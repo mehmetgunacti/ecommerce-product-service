@@ -1,4 +1,4 @@
-package com.wolf359apps.ecommerce.products.entity;
+package com.wolf359apps.ecommerce.products.v1.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
