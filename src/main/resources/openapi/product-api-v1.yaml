@@ -1,0 +1,39 @@
+openapi: 3.0.1
+info:
+  title: E-Commerce Catalog API
+  version: 1.0.0
+paths:
+  /products:
+    get:
+      summary: Retrieve products
+      responses:
+        '200':
+          description: A list of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        name:
+          type: string
+          example: "Wireless Mouse"
+        description:
+          type: string
+          example: "A sleek wireless mouse with USB receiver."
+        price:
+          type: number
+          format: BigDecimal
+          example: 29.99
+      required:
+        - id
+        - name
+        - price

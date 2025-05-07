@@ -17,6 +17,10 @@
     <name>Products Service</name>
     <description>Member of a sample e-Commerce Project</description>
 
+    <properties>
+        <base.package>${project.groupId}.products</base.package>
+    </properties>
+
     <dependencies>
 
         <!-- DATA JPA -->
@@ -32,5 +36,28 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <executions>
+                    <!-- repeat 'execution' for v2, v3, etc. -->
+                    <execution>
+                        <id>generate-openapi</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi/product-api-v1.yaml</inputSpec>
+                            <modelPackage>${base.package}.v1.dto</modelPackage>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

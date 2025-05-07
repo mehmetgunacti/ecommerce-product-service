@@ -1,5 +1,6 @@
 package com.wolf359apps.ecommerce.products.v1.service;
 
+import com.wolf359apps.ecommerce.products.v1.dto.ProductDTO;
 import com.wolf359apps.ecommerce.products.v1.entity.Product;
 import com.wolf359apps.ecommerce.products.v1.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ public class ProductService {
 	private final ProductRepository productRepository;
 
 	public List<Product> getAllProducts() {
+		ProductDTO dto = new ProductDTO();
 		return productRepository.findAll();
 	}
 
