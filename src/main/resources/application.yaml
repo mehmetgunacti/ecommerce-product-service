@@ -1,5 +1,13 @@
 spring:
   application:
-    name: Products Service
+    name: Product Service
+  datasource:
+    url: jdbc:postgresql://postgres-service:5432/productdb
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 server:
   port: 8761
