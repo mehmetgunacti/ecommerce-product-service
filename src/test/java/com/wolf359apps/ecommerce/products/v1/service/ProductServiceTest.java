@@ -38,7 +38,7 @@ public class ProductServiceTest {
 
 		when(productRepository.findAll()).thenReturn(List.of(product));
 
-		List<Product> products = productService.getAllProducts();
+		List<Product> products = productService.getAll();
 
 		assertFalse(products.isEmpty());
 		assertEquals(1, products.size());
@@ -53,7 +53,7 @@ public class ProductServiceTest {
 
 		when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
-		Optional<Product> foundProduct = productService.getProductById(1L);
+		Optional<Product> foundProduct = productService.getById(1L);
 
 		assertTrue(foundProduct.isPresent());
 		assertEquals("Laptop", foundProduct.get().getName());
@@ -67,7 +67,7 @@ public class ProductServiceTest {
 
 		when(productRepository.save(product)).thenReturn(product);
 
-		Product savedProduct = productService.saveProduct(product);
+		Product savedProduct = productService.save(product);
 
 		assertNotNull(savedProduct);
 		assertEquals("Smartphone", savedProduct.getName());
@@ -77,7 +77,7 @@ public class ProductServiceTest {
 	void testDeleteProduct() {
 
 		Long productId = 1L;
-		productService.deleteProduct(productId);
+		productService.delete(productId);
 		verify(productRepository, times(1)).deleteById(productId);
 
 	}

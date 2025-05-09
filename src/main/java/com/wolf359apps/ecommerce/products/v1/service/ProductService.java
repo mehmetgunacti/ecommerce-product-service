@@ -1,6 +1,5 @@
 package com.wolf359apps.ecommerce.products.v1.service;
 
-import com.wolf359apps.ecommerce.products.v1.dto.ProductDTO;
 import com.wolf359apps.ecommerce.products.v1.entity.Product;
 import com.wolf359apps.ecommerce.products.v1.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,21 +14,42 @@ public class ProductService {
 
 	private final ProductRepository productRepository;
 
-	public List<Product> getAllProducts() {
-		ProductDTO dto = new ProductDTO();
-		return productRepository.findAll();
-	}
+	public Product save(Product product) {
 
-	public Optional<Product> getProductById(Long id) {
-		return productRepository.findById(id);
-	}
-
-	public Product saveProduct(Product product) {
 		return productRepository.save(product);
+
 	}
 
-	public void deleteProduct(Long id) {
+	public Optional<Product> getById(Long id) {
+
+		return productRepository.findById(id);
+
+	}
+
+	public List<Product> getAll() {
+
+		return productRepository.findAll();
+
+	}
+
+	public Optional<Product> update(Long id, Product product) {
+
+		return productRepository
+				.findById(id)
+				.map(
+						existingProduct -> {
+							product.setId(id);
+							return productRepository.save(product);
+						}
+				);
+
+	}
+
+	public void delete(Long id) {
+
 		productRepository.deleteById(id);
+
 	}
 
 }
+
