@@ -21,14 +21,13 @@ kind: PersistentVolume
 metadata:
   name: postgres-pv
 spec:
-  storageClassName: manual
   capacity:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /home/mserkan/dev/ecommerce/product_postgres
+    path: /mnt/data/ecommerce/product_postgres
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -36,12 +35,12 @@ metadata:
   name: postgres-pvc
   namespace: ecommerce
 spec:
-  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
+  volumeName: postgres-pv
 ---
 apiVersion: apps/v1
 kind: StatefulSet
