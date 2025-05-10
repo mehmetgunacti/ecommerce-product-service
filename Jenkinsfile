@@ -22,17 +22,17 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                sh 'kubectl apply -f k8s-deployment.yaml'
-            }
-        }
-
-        stage('Verify') {
-            steps {
-                sh 'kubectl rollout status deployment ecommerce-products -n ecommerce'
-            }
-        }
+//         stage('Deploy to Kubernetes') {
+//             steps {
+//                 sh 'kubectl apply -f k8s-deployment.yaml'
+//             }
+//         }
+//
+//         stage('Verify') {
+//             steps {
+//                 sh 'kubectl rollout status deployment ecommerce-products -n ecommerce'
+//             }
+//         }
 
     }
 
