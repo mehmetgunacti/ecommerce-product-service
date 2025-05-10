@@ -22,6 +22,35 @@ pipeline {
             }
         }
 
+        stage('Update Deployment YAML') {
+            steps {
+                script {
+                    // Extract the version from pom.xml
+                    def versionCommand = "xmllint --xpath \"/*[local-name()='project']/*[local-name()='version']/text()\" ecommerce-product-service/pom.xml"
+                    def version = sh(script: versionCommand, returnStdout: true).trim()
+                    echo "Extracted version: ${version}"
+
+                    // Define the YAML file location
+                    def deploymentYaml = "ecommerce-parent/k8s/product-deployment.yaml"
+
+                    // Update the image tag in the deployment YAML
+                    def updateCommand = "sed -i 's|image: registry.ecommerce.local:5000/ecommerce-product-service:latest|image: registry.ecommerce.local:5000/ecommerce-product-service:${version}|' ${deploymentYaml}"
+                    sh updateCommand
+                    echo "Updated ${deploymentYaml} with version ${version}"
+
+                    // Commit and push the changes to Git
+                    sh """
+                        cd ecommerce-parent
+                        git add ${deploymentYaml}
+                        git commit -m 'Update deployment to version ${version}'
+                        git push origin main
+                    """
+                    echo "Changes pushed to repository"
+                }
+            }
+        }
+
+
 //         stage('Deploy to Kubernetes') {
 //             steps {
 //                 sh 'kubectl apply -f k8s-deployment.yaml'
