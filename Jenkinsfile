@@ -25,26 +25,26 @@ pipeline {
         stage('Update Deployment YAML') {
             steps {
                 script {
+                    def projectName = "ecommerce-product-service"
+                    def parentProjectName = "ecommerce-parent"
+                    def deploymentYaml = "${parentProjectName}/k8s/${projectName}-deployment.yaml"
+
                     // Extract the version from pom.xml
-                    def versionCommand = "xmllint --xpath \"/*[local-name()='project']/*[local-name()='version']/text()\" ecommerce-product-service/pom.xml"
+                    def versionCommand = "xmllint --xpath \"/*[local-name()='project']/*[local-name()='version']/text()\" ${projectName}/pom.xml"
                     def version = sh(script: versionCommand, returnStdout: true).trim()
                     echo "Extracted version: ${version}"
 
-                    // Define the YAML file location
-                    def deploymentYaml = "k8s/product-deployment.yaml"
-
                     // Update the image tag in the deployment YAML
-                    def updateCommand = "sed -i 's|image: registry.ecommerce.local:5000/ecommerce-product-service:latest|image: registry.ecommerce.local:5000/ecommerce-product-service:${version}|' ${deploymentYaml}"
+                    def updateCommand = "sed -i 's|image: registry.ecommerce.local:5000/${projectName}:latest|image: registry.ecommerce.local:5000/${projectName}:${version}|' ${deploymentYaml}"
                     sh updateCommand
                     echo "Updated ${deploymentYaml} with version ${version}"
 
                     // Commit and push the changes to Git
                     sh """
-                        cd ../ecommerce-parent
-                        pwd
-                        git add ${deploymentYaml}
+                        cd ${parentProjectName}
+                        git add k8s/${projectName}-deployment.yaml
                         git commit -m 'Update deployment to version ${version}'
-                        git push ${GITHUB_URL}/ecommerce-parent.git
+                        git push origin main
                     """
                     echo "Changes pushed to repository"
                 }
