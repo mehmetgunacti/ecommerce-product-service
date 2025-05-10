@@ -12,9 +12,9 @@
         <relativePath>../ecommerce-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>ecommerce-products</artifactId>
+    <artifactId>ecommerce-product-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Products Service</name>
+    <name>Product Service</name>
     <description>Member of a sample e-Commerce Project</description>
 
     <properties>
