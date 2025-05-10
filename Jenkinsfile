@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'ecommerce-products'
+        DOCKER_IMAGE = 'ecommerce-product-service'
     }
     stages {
 
@@ -15,7 +15,7 @@ pipeline {
         stage('Build with Maven') {
             steps {
                 sh '''
-                    cd ecommerce-products
+                    cd ecommerce-product-service
                     chmod +x mvnw
                     ./mvnw clean package
                 '''
@@ -30,7 +30,7 @@ pipeline {
 //
 //         stage('Verify') {
 //             steps {
-//                 sh 'kubectl rollout status deployment ecommerce-products -n ecommerce'
+//                 sh 'kubectl rollout status deployment ecommerce-product-service -n ecommerce'
 //             }
 //         }
 
