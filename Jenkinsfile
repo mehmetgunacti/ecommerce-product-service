@@ -35,7 +35,8 @@ pipeline {
                     echo "Extracted version: ${version}"
 
                     // Update the image tag in the deployment YAML
-                    def updateCommand = "sed -i 's|image: registry.ecommerce.local:5000/${projectName}:latest|image: registry.ecommerce.local:5000/${projectName}:${version}|' ${deploymentYaml}"
+                    def updateCommand = "sed -i 's|image: registry.ecommerce.local:5000/${projectName}:.*|image: registry.ecommerce.local:5000/${projectName}:${version}|' ${deploymentYaml}"
+
                     sh updateCommand
                     echo "Updated ${deploymentYaml} with version ${version}"
 
