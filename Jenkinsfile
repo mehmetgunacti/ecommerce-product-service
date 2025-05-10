@@ -40,7 +40,7 @@ pipeline {
 
                     // Commit and push the changes to Git
                     sh """
-                        cd ecommerce-parent
+                        cd ..
                         git add ${deploymentYaml}
                         git commit -m 'Update deployment to version ${version}'
                         git push origin main
