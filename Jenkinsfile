@@ -8,7 +8,7 @@ pipeline {
         stage('Clone Repositories') {
             steps {
                 sh 'rm -rf ecommerce-parent && git clone https://github.com/mehmetgunacti/ecommerce-parent.git'
-                sh 'rm -rf ecommerce-products && git clone https://github.com/mehmetgunacti/ecommerce-products.git'
+                sh 'rm -rf ecommerce-product-service && git clone https://github.com/mehmetgunacti/ecommerce-product-service.git'
             }
         }
 
