@@ -31,7 +31,7 @@ pipeline {
                     echo "Extracted version: ${version}"
 
                     // Define the YAML file location
-                    def deploymentYaml = "ecommerce-parent/k8s/product-deployment.yaml"
+                    def deploymentYaml = "k8s/product-deployment.yaml"
 
                     // Update the image tag in the deployment YAML
                     def updateCommand = "sed -i 's|image: registry.ecommerce.local:5000/ecommerce-product-service:latest|image: registry.ecommerce.local:5000/ecommerce-product-service:${version}|' ${deploymentYaml}"
@@ -40,7 +40,7 @@ pipeline {
 
                     // Commit and push the changes to Git
                     sh """
-                        cd ..
+                        cd ../ecommerce-parent
                         git add ${deploymentYaml}
                         git commit -m 'Update deployment to version ${version}'
                         git push origin main
