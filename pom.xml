@@ -13,7 +13,7 @@
     </parent>
 
     <artifactId>ecommerce-product-service</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
 
     <name>Product Service</name>
     <description>Member of a sample e-Commerce Project</description>
