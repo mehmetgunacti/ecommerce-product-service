@@ -25,9 +25,12 @@ pipeline {
         stage('Update Deployment YAML') {
             steps {
                 script {
+
+                    // Define variables
                     def projectName = "ecommerce-product-service"
                     def parentProjectName = "ecommerce-parent"
-                    def deploymentYaml = "${parentProjectName}/k8s/${projectName}-deployment.yaml"
+                    def deploymentYaml_relative = "k8s/ecommerce/${projectName}-deployment.yaml"
+                    def deploymentYaml_absolute = "${parentProjectName}/${deploymentYaml_relative}"
 
                     // Extract the version from pom.xml
                     def versionCommand = "xmllint --xpath \"/*[local-name()='project']/*[local-name()='version']/text()\" ${projectName}/pom.xml"
@@ -35,16 +38,16 @@ pipeline {
                     echo "Extracted version: ${version}"
 
                     // Update the image tag in the deployment YAML
-                    def updateCommand = "sed -i 's|image: registry.ecommerce.local:5000/${projectName}:.*|image: registry.ecommerce.local:5000/${projectName}:${version}|' ${deploymentYaml}"
+                    def updateCommand = "sed -i 's|image: registry.ecommerce.local:5000/${projectName}:.*|image: registry.ecommerce.local:5000/${projectName}:${version}|' ${deploymentYaml_absolute}"
 
                     sh updateCommand
-                    echo "Updated ${deploymentYaml} with version ${version}"
+                    echo "Updated ${deploymentYaml_absolute} with version ${version}"
 
                     // Commit and push the changes to Git
                     sh """
                         cd ${parentProjectName}
-                        git add k8s/${projectName}-deployment.yaml
-                        git commit -m 'Update deployment to version ${version}'
+                        git add ${deploymentYaml_relative}
+                        git commit -m 'Update ${deploymentYaml_absolute} to version ${version}'
                         git push origin main
                     """
                     echo "Changes pushed to repository"
