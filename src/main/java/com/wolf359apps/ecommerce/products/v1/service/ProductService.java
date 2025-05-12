@@ -34,14 +34,8 @@ public class ProductService {
 
 	public Optional<Product> update(Long id, Product product) {
 
-		return productRepository
-				.findById(id)
-				.map(
-						existingProduct -> {
-							product.setId(id);
-							return productRepository.save(product);
-						}
-				);
+		product.setId(id);
+		return Optional.of(productRepository.save(product));
 
 	}
 
