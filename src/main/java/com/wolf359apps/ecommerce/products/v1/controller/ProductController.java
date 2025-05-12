@@ -1,6 +1,8 @@
 package com.wolf359apps.ecommerce.products.v1.controller;
 
+import com.wolf359apps.ecommerce.products.v1.dto.ProductDTO;
 import com.wolf359apps.ecommerce.products.v1.entity.Product;
+import com.wolf359apps.ecommerce.products.v1.mapper.ProductMapper;
 import com.wolf359apps.ecommerce.products.v1.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,38 +24,52 @@ import java.util.List;
 public class ProductController {
 
 	private final ProductService productService;
+	private final ProductMapper  productMapper;
 
 	@PostMapping
-	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+	public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO dto) {
 
+		Product product      = productMapper.toEntity(dto);
 		Product savedProduct = productService.save(product);
-		return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+		return new ResponseEntity<>(
+				productMapper.toDto(savedProduct),
+				HttpStatus.CREATED
+		);
 
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+	public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
 
 		return productService.getById(id)
-				.map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+				.map(product -> new ResponseEntity<>(
+								productMapper.toDto(product),
+								HttpStatus.OK
+						)
+				)
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Product>> getAllProducts() {
+	public ResponseEntity<List<ProductDTO>> getAllProducts() {
 
-		List<Product> products = productService.getAll();
+		List<ProductDTO> products =
+				productService
+						.getAll()
+						.stream()
+						.map(productMapper::toDto)
+						.toList();
 		return new ResponseEntity<>(products, HttpStatus.OK);
 
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Product> putProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+	public ResponseEntity<ProductDTO> putProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
 
 		return productService
 				.update(id, updatedProduct)
-				.map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+				.map(product -> new ResponseEntity<>(productMapper.toDto(product), HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
 	}
