@@ -11,3 +11,5 @@ spring:
     show-sql: true
 server:
   port: 8761
+  servlet:
+    context-path: /products
