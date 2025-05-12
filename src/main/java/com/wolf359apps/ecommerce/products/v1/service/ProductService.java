@@ -1,6 +1,7 @@
 package com.wolf359apps.ecommerce.products.v1.service;
 
 import com.wolf359apps.ecommerce.products.v1.entity.Product;
+import com.wolf359apps.ecommerce.products.v1.mapper.ProductMapper;
 import com.wolf359apps.ecommerce.products.v1.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.Optional;
 public class ProductService {
 
 	private final ProductRepository productRepository;
+	private final ProductMapper     productMapper;
 
 	public Product save(Product product) {
 
@@ -32,10 +34,17 @@ public class ProductService {
 
 	}
 
-	public Optional<Product> update(Long id, Product product) {
+	public Optional<Product> update(final Long id, final Product product) {
 
-		product.setId(id);
-		return Optional.of(productRepository.save(product));
+		return productRepository
+				.findById(id)
+				.map(existingProduct -> {
+
+					// Merge new values from productWithNewData into the existingProduct
+					productMapper.copyValues(product, existingProduct);
+					return productRepository.save(existingProduct);
+
+				});
 
 	}
 
